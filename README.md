@@ -63,7 +63,7 @@ gl.vertexAttribPointer(
   3, // 3 dimensional
   gl.FLOAT, // Type (could also be gl.BYTE, gl.SHORT, etc)
   false, // Should the GPU normalize the data?
-  6 * Float32Array.BYTES_PER_ELEMENT, // Stride
+  9 * Float32Array.BYTES_PER_ELEMENT, // Stride
   0 // Offset
 );
 gl.vertexAttribPointer(
@@ -71,7 +71,7 @@ gl.vertexAttribPointer(
   3,
   gl.FLOAT,
   false,
-  6 * Float32Array.BYTES_PER_ELEMENT,
+  9 * Float32Array.BYTES_PER_ELEMENT,
   3 * Float32Array.BYTES_PER_ELEMENT
 );
 // ...
