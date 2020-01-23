@@ -1,6 +1,6 @@
 # ArrayBufferView stride parameter
 
-**Author**: Shu-Yu Guo, Surma
+**Author**: Shu-yu Guo, Surma
 
 **Champion**: TBD
 
@@ -135,7 +135,7 @@ const alphaChannel = new Uint8ClampedArray(
 
 ### FAQ & open questions
 
-#### Is an options object is better than yet another paramter?
+#### Is an options object is better than yet another parameter?
 
 Potentially.
 
