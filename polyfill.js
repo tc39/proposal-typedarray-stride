@@ -36,6 +36,8 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
         return new globalThis[name](maybeBuffer, offset + index * stride, 1)[0];
       }
       switch (propKey) {
+        case "stride":
+          return stride;
         case "byteLength":
           return Math.floor(view.byteLength / stride) * BYTES_PER_ELEMENT;
         case "length":

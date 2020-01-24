@@ -38,6 +38,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
     expect(view[1]).to.equal(1);
     expect(view[2]).to.equal(2);
     expect(view[3]).to.equal(3);
+    expect(view.stride).to.equal(2);
   });
 
   it("can handle iterators", function() {
