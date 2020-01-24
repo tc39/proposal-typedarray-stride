@@ -8,9 +8,9 @@
 
 ## Motivation
 
-[ArrayBuffer views][typedarray] (like `Uint8Array`, `Float32Array`, etc) provide views onto [`ArrayBuffer`][arraybuffer]s. These views allow the same chunk of memory to be interpreted as different kinds of data and allows developers to manipulate binary data in place.
+[ArrayBuffer views][typedarray] (like `Uint8Array`, `Float32Array`, etc) provide views onto [`ArrayBuffer`][arraybuffer]s. These views allow the same chunk of memory to be interpreted as different kinds of data and allow developers to manipulate binary data in-place.
 
-All constructors to a view conform to the similarly shaped API:
+All constructors to a view conform to the this API shape:
 
 ```js
 new Float32Array(length);
@@ -91,10 +91,22 @@ This allows developers to work on subset of `ArrayBuffer`s with a specific view 
 
 **The proposal is to add an additional parameter for `stride` to the constructor.**
 
+```js
+new Float32Array(buffer[, byteOffset[, length[, stride]]]);
+```
+
+The default value for `stride` is `Float32Array.BYTES_PER_ELEMENT`.
+
 ## High-level API
 
 ```js
-const { buffer } = new Float32Array([0, 0, 0, 1, 1, 1, 10, 10, 10, 11, 11, 11]);
+// prettier-ignore
+const { buffer } = new Float32Array([
+    0, 0, 0,
+    1, 1, 1,
+    10, 10, 10,
+    11, 11, 11
+]);
 const view1 = new Float32Array(
   buffer, // buffer
   0 * Float32Array.BYTES_PER_ELEMENT, // offset
@@ -137,7 +149,20 @@ const alphaChannel = new Uint8ClampedArray(
 
 #### Is an options object is better than yet another parameter?
 
-Potentially.
+I think an options object _is_ preferable, but requires a more invasive change to the spec. The benefit is that it would allow developers to define a `stride` without having to explicitely define an `offset` or a `length`, both of which already have well-defined default values.
+
+For example:
+
+```js
+const view1 = new Float32Array(
+  buffer, // buffer
+  {
+    offset: 0 * Float32Array.BYTES_PER_ELEMENT,
+    length: 6,
+    stride: 3 * Float32Array.BYTES_PER_ELEMENT
+  }
+);
+```
 
 ## TC39 meeting notes
 
