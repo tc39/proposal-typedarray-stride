@@ -173,7 +173,7 @@ const view1 = new Float32Array(buffer, {
 });
 ```
 
-#### What about unaligned offsets?
+#### Supporting unaligned offsets
 
 Let’s imagine an `ArrayBuffer` containing data of the following shape:
 
@@ -188,7 +188,7 @@ Let’s imagine an `ArrayBuffer` containing data of the following shape:
 
 Currently, you can’t create a `Float32Array` with an offset of `2` as offsets need to be a multiple of `BYTES_PER_ELEMENT`. Ideally we’d lift this restriction, so that developers can conveniently access tightly packed data structures like the one above.
 
-This has performance implications for copy operations, so it might make sense to limit the lifting of the restrictions for views with a non-default stride only.
+This has performance implications for data access, but the concept of strides already impacts performance at least in the context of copying data. So it might make sense to lif this restrictions for views with non-default strides.
 
 ## TC39 meeting notes
 
