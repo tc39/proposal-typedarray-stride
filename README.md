@@ -123,6 +123,18 @@ const view2 = new Float32Array(
 // view2 == [1, 1, 1, 11, 11, 11];
 ```
 
+### Feature detection
+
+To detect support for stride, developers can check if an instance of any ArrayBuffer view exposes a `stride` property:
+
+```js
+if ("stride" in new Float32Array()) {
+  // `stride` is supported
+} else {
+  // `stride` is not supported
+}
+```
+
 ### Example
 
 As an example, this would allow developers to separately access the individual color channels of a `ImageData` image as continuous arrays:
