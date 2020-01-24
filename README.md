@@ -186,6 +186,18 @@ TBD
 
 ## Implementations
 
+### Polyfill
+
+There is _work-in-progress_ polyfill in `polyfill.js` using ES6 Proxies.
+
+- [x] Implements the `stride parameter
+- [x] Handles `[index]` access
+- [x] Handles iterators
+- [ ] Handles async iterators (untested)
+- [ ] Handles `map()` (untested)
+
+### Browsers
+
 None
 
 [imagedata]: https://developer.mozilla.org/en-US/docs/Web/API/ImageData

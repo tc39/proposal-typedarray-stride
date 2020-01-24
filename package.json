@@ -3,7 +3,8 @@
   "name": "template-for-proposals",
   "description": "A repository template for ECMAScript proposals.",
   "scripts": {
-    "build": "ecmarkup spec.emu index.html"
+    "build": "ecmarkup spec.emu index.html",
+    "test": "karma start"
   },
   "homepage": "https://github.com/tc39/template-for-proposals#readme",
   "repository": {
@@ -12,6 +13,15 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "ecmarkup": "^3.11.5"
+    "chai": "^4.2.0",
+    "ecmarkup": "^3.11.5",
+    "karma": "^4.4.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-detect-browsers": "^2.3.3",
+    "karma-firefox-launcher": "^1.3.0",
+    "karma-mocha": "^1.3.0",
+    "karma-safari-launcher": "^1.0.0",
+    "mocha": "^7.0.0"
   }
 }
