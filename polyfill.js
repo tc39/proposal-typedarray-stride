@@ -26,7 +26,6 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
   if (!stride) {
     return new globalThis[name](maybeBuffer, ...params);
   }
-  // console.log({maybeBuffer, offset, length, stride, BYTES_PER_ELEMENT})
   const view = new globalThis[name](maybeBuffer, offset);
   return new Proxy(view, {
     get(_target, propKey, receiver) {
