@@ -161,20 +161,34 @@ const alphaChannel = new Uint8ClampedArray(
 
 #### Is an options object is better than yet another parameter?
 
-I think an options object _is_ preferable, but requires a more invasive change to the spec. The benefit is that it would allow developers to define a `stride` without having to explicitely define an `offset` or a `length`, both of which already have well-defined default values.
+I think an options object _is_ preferable, but requires a more invasive change to the spec. The benefit is that it would allow developers to define a `stride` without having to explicitly define an `offset` or a `length`, both of which already have well-defined default values.
 
 For example:
 
 ```js
-const view1 = new Float32Array(
-  buffer, // buffer
-  {
-    offset: 0 * Float32Array.BYTES_PER_ELEMENT,
-    length: 6,
-    stride: 3 * Float32Array.BYTES_PER_ELEMENT
-  }
-);
+const view1 = new Float32Array(buffer, {
+  offset: 0 * Float32Array.BYTES_PER_ELEMENT,
+  length: 6,
+  stride: 3 * Float32Array.BYTES_PER_ELEMENT
+});
 ```
+
+#### What about unaligned offsets?
+
+Let’s imagine an `ArrayBuffer` containing data of the following shape:
+
+```js
+// prettier-ignore
+[
+  Uint8, Uint8, Float32,
+  Uint8, Uint8, Float32,
+  // ...
+]
+```
+
+Currently, you can’t create a `Float32Array` with an offset of `2` as offsets need to be a multiple of `BYTES_PER_ELEMENT`. Ideally we’d lift this restriction, so that developers can conveniently access tightly packed data structures like the one above.
+
+This has performance implications for copy operations, so it might make sense to limit the lifting of the restrictions for views with a non-default stride only.
 
 ## TC39 meeting notes
 
