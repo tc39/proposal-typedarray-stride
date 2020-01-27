@@ -18,22 +18,23 @@ function betterIsNaN(s) {
 
 function polyfilledArrayView(name, maybeBuffer, ...params) {
   if (!(maybeBuffer instanceof ArrayBuffer)) {
-    return new globalThis[name](maybeBuffer, ...params);
+    return new globalThis[name+"Array"](maybeBuffer, ...params);
   }
-  const BYTES_PER_ELEMENT = globalThis[name].BYTES_PER_ELEMENT;
+  const BYTES_PER_ELEMENT = globalThis[name+"Array"].BYTES_PER_ELEMENT;
   let [offset = 0, length, stride] = params;
   // Without a stride parameter, we don’t need to polyfill anything
   if (!stride) {
-    return new globalThis[name](maybeBuffer, ...params);
+    return new globalThis[name+"Array"](maybeBuffer, ...params);
   }
-  const view = new globalThis[name](maybeBuffer, offset);
+  const view = new DataView(maybeBuffer, offset);
+  // const view = new globalThis[name+"Array"](maybeBuffer, offset);
   return new Proxy(view, {
     get(_target, propKey, receiver) {
       // If it’s a number, a cell is accessed and we need to implement the stride
       // magic.
       if (!betterIsNaN(propKey)) {
         const index = parseInt(propKey);
-        return new globalThis[name](maybeBuffer, offset + index * stride, 1)[0];
+        return view["get" + name](index * stride, true);
       }
       switch (propKey) {
         case "stride":
@@ -61,35 +62,35 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
 }
 
 export function Int8Array(...params) {
-  return polyfilledArrayView("Int8Array", ...params);
+  return polyfilledArrayView("Int8", ...params);
 }
 export function Uint8Array(...params) {
-  return polyfilledArrayView("Uint8Array", ...params);
+  return polyfilledArrayView("Uint8", ...params);
 }
 export function Uint8ClampedArray(...params) {
-  return polyfilledArrayView("Uint8ClampedArray", ...params);
+  return polyfilledArrayView("Uint8Clamped", ...params);
 }
 export function Int16Array(...params) {
-  return polyfilledArrayView("Int16Array", ...params);
+  return polyfilledArrayView("Int16", ...params);
 }
 export function Uint16Array(...params) {
-  return polyfilledArrayView("Uint16Array", ...params);
+  return polyfilledArrayView("Uint16", ...params);
 }
 export function Int32Array(...params) {
-  return polyfilledArrayView("Int32Array", ...params);
+  return polyfilledArrayView("Int32", ...params);
 }
 export function Uint32Array(...params) {
-  return polyfilledArrayView("Uint32Array", ...params);
+  return polyfilledArrayView("Uint32", ...params);
 }
 export function Float32Array(...params) {
-  return polyfilledArrayView("Float32Array", ...params);
+  return polyfilledArrayView("Float32", ...params);
 }
 export function Float64Array(...params) {
-  return polyfilledArrayView("Float64Array", ...params);
+  return polyfilledArrayView("Float64", ...params);
 }
 export function BigInt64Array(...params) {
-  return polyfilledArrayView("BigInt64Array", ...params);
+  return polyfilledArrayView("BigInt64", ...params);
 }
 export function BigUint64Array(...params) {
-  return polyfilledArrayView("BigUint64Array", ...params);
+  return polyfilledArrayView("BigUint64", ...params);
 }
