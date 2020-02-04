@@ -94,7 +94,7 @@ This allows developers to work on subset of `ArrayBuffer`s with a specific view 
 new Float32Array(buffer[, byteOffset[, length[, stride]]]);
 ```
 
-The default value for `stride` is `Float32Array.BYTES_PER_ELEMENT`.
+The default value and lower bound for `stride` is `1`, and it must be a multiple of `Float32Array.BYTES_PER_ELEMENT`.
 
 ## High-level API
 
@@ -110,13 +110,13 @@ const view1 = new Float32Array(
   buffer, // buffer
   0 * Float32Array.BYTES_PER_ELEMENT, // offset
   6, // length
-  3 * Float32Array.BYTES_PER_ELEMENT // stride (new!)
+  3  // stride (new!)
 );
 const view2 = new Float32Array(
   buffer,
   2 * Float32Array.BYTES_PER_ELEMENT,
   6,
-  3 * Float32Array.BYTES_PER_ELEMENT
+  3
 );
 // view1 == [0, 0, 0, 10, 10, 10];
 // view2 == [1, 1, 1, 11, 11, 11];
@@ -168,26 +168,21 @@ For example:
 const view1 = new Float32Array(buffer, {
   offset: 0 * Float32Array.BYTES_PER_ELEMENT,
   length: 6,
-  stride: 3 * Float32Array.BYTES_PER_ELEMENT
+  stride: 3
 });
 ```
 
 #### Supporting unaligned offsets
 
-Let’s imagine an `ArrayBuffer` containing data of the following shape:
+Currently TypedArrays are always aligned, as passing a byte offset that results in unaligned access throws. At the cost of expressivity, guaranteeing alignment by construction is advantageous for several reasons:
 
-```js
-// prettier-ignore
-[
-  Uint8, Uint8, Float32,
-  Uint8, Uint8, Float32,
-  // ...
-]
-```
+- Faster performance
+- Easier machine code generation
+- Easier to use on top of SharedArrayBuffers, especially with Atomics
 
-Currently, you can’t create a `Float32Array` with an offset of `2` as offsets need to be a multiple of `BYTES_PER_ELEMENT`. Ideally we’d lift this restriction, so that developers can conveniently access tightly packed data structures like the one above.
+In light of this, we are not proposing to relax the alignment requirements for integer TypedArrays.
 
-This has performance implications for data access, but the concept of strides already impacts performance at least in the context of copying data. So it might make sense to lif this restrictions for views with non-default strides.
+This is perhaps more of an open question for for Float32Array and Float64Array.
 
 ## TC39 meeting notes
 
