@@ -32,7 +32,6 @@ The use-cases for ArrayBuffers on the platform include, but are not limited to, 
 const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
 // imageData.data is a Uint8ClampedArray containing data in the scheme
 // [ r0, g0, b0, a0, r1, g1, b1, a1, ... ]
-)
 ```
 
 Accessing one color channel at a time is tedious due to the interleaved representation.
