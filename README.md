@@ -94,7 +94,7 @@ This allows developers to work on subset of `ArrayBuffer`s with a specific view 
 new Float32Array(buffer[, byteOffset[, length[, stride]]]);
 ```
 
-The default value and lower bound for `stride` is `1`, and it must be a multiple of `Float32Array.BYTES_PER_ELEMENT`.
+The default value and lower bound for `stride` is `1`, and it is expressed as a multiple of elements.
 
 ## High-level API
 
