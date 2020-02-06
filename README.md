@@ -2,9 +2,9 @@
 
 **Author**: Shu-yu Guo, Surma
 
-**Champion**: TBD
+**Champion**: Shu-yu Guo
 
-**Stage**: Stage 0 of [the TC39 process](https://tc39.github.io/process-document/).
+**Stage**: Stage 1 of [the TC39 process](https://tc39.github.io/process-document/).
 
 ## Motivation
 
