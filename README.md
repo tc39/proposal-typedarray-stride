@@ -101,25 +101,32 @@ The default value and lower bound for `stride` is `1`, and it is expressed as a 
 ```js
 // prettier-ignore
 const { buffer } = new Float32Array([
-    0, 0, 0,
-    1, 1, 1,
-    10, 10, 10,
-    11, 11, 11
+    0, 10, 20,
+    1, 11, 21,
+    2, 12, 22
 ]);
 const view1 = new Float32Array(
   buffer, // buffer
   0 * Float32Array.BYTES_PER_ELEMENT, // offset
-  6, // length
+  3, // length
   3  // stride (new!)
 );
 const view2 = new Float32Array(
   buffer,
-  2 * Float32Array.BYTES_PER_ELEMENT,
-  6,
+  1 * Float32Array.BYTES_PER_ELEMENT,
+  3,
   3
 );
-// view1 == [0, 0, 0, 10, 10, 10];
-// view2 == [1, 1, 1, 11, 11, 11];
+const view3 = new Float32Array(
+  buffer,
+  2 * Float32Array.BYTES_PER_ELEMENT,
+  3,
+  3
+);
+
+// view1 == [0, 1, 2];
+// view2 == [10, 11, 12];
+// view2 == [20, 21, 22];
 ```
 
 ### Feature detection
