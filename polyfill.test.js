@@ -53,7 +53,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
 describe("ArrayBufferView-Stride-Polyfill w/ Float32Array", function() {
   it("can create views with a stride", function() {
     const buffer = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3]).buffer;
-    const view = new Float32Array(buffer, 0, 4, 8);
+    const view = new Float32Array(buffer, 0, 4, 2);
     expect(view.length).to.equal(4);
     expect(view.byteLength).to.equal(16);
     expect(view[0]).to.equal(0);
@@ -64,7 +64,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Float32Array", function() {
 
   it("can handle iterators", function() {
     const buffer = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3]).buffer;
-    const view = new Float32Array(buffer, 0, 4, 8);
+    const view = new Float32Array(buffer, 0, 4, 2);
     expect(view.length).to.equal(4);
     expect(view.byteLength).to.equal(16);
     expect([...view]).to.deep.equal([0, 1, 2, 3]);

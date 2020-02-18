@@ -18,13 +18,13 @@ function betterIsNaN(s) {
 
 function polyfilledArrayView(name, maybeBuffer, ...params) {
   if (!(maybeBuffer instanceof ArrayBuffer)) {
-    return new globalThis[name+"Array"](maybeBuffer, ...params);
+    return new globalThis[name + "Array"](maybeBuffer, ...params);
   }
-  const BYTES_PER_ELEMENT = globalThis[name+"Array"].BYTES_PER_ELEMENT;
+  const BYTES_PER_ELEMENT = globalThis[name + "Array"].BYTES_PER_ELEMENT;
   let [offset = 0, length, stride] = params;
   // Without a stride parameter, we don’t need to polyfill anything
   if (!stride) {
-    return new globalThis[name+"Array"](maybeBuffer, ...params);
+    return new globalThis[name + "Array"](maybeBuffer, ...params);
   }
   const view = new DataView(maybeBuffer, offset);
   // const view = new globalThis[name+"Array"](maybeBuffer, offset);
@@ -34,15 +34,18 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
       // magic.
       if (!betterIsNaN(propKey)) {
         const index = parseInt(propKey);
-        return view["get" + name](index * stride, true);
+        return view["get" + name](index * stride * BYTES_PER_ELEMENT, true);
       }
       switch (propKey) {
         case "stride":
           return stride;
         case "byteLength":
-          return Math.floor(view.byteLength / stride) * BYTES_PER_ELEMENT;
+          return (
+            Math.floor(view.byteLength / (stride * BYTES_PER_ELEMENT)) *
+            BYTES_PER_ELEMENT
+          );
         case "length":
-          return Math.floor(view.byteLength / stride);
+          return Math.floor(view.byteLength / (stride * BYTES_PER_ELEMENT));
         case Symbol.iterator:
           return function*() {
             for (let i = 0; i < receiver.length; i++) {
