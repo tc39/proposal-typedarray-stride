@@ -46,6 +46,9 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
           );
         case "length":
           return Math.floor(view.byteLength / (stride * BYTES_PER_ELEMENT));
+        case "slice":
+          const newArr = new globalThis[name + "Array"]([...receiver]);
+          return newArr.slice.bind(newArr);
         case Symbol.iterator:
           return function*() {
             for (let i = 0; i < receiver.length; i++) {

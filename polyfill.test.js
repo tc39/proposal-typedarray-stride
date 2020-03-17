@@ -67,6 +67,27 @@ describe("ArrayBufferView-Stride-Polyfill w/ Float32Array", function() {
     const view = new Float32Array(buffer, 0, 4, 2);
     expect(view.length).to.equal(4);
     expect(view.byteLength).to.equal(16);
+    expect(view.buffer.byteLength).to.equal(32);
     expect([...view]).to.deep.equal([0, 1, 2, 3]);
+  });
+
+  it("can handle slice for copying", function() {
+    const buffer = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3]).buffer;
+    const view = new Float32Array(buffer, 0, 4, 2).slice();
+    expect(view.length).to.equal(4);
+    expect(view.byteLength).to.equal(16);
+    expect(view.buffer).to.not.equal(buffer);
+    expect(view.buffer.byteLength).to.equal(16);
+    expect([...view]).to.deep.equal([0, 1, 2, 3]);
+  });
+
+  it("can handle slice for slicing", function() {
+    const buffer = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3]).buffer;
+    const view = new Float32Array(buffer, 0, 4, 2).slice(1, -1);
+    expect(view.length).to.equal(2);
+    expect(view.byteLength).to.equal(8);
+    expect(view.buffer).to.not.equal(buffer);
+    expect(view.buffer.byteLength).to.equal(8);
+    expect([...view]).to.deep.equal([1, 2]);
   });
 });
