@@ -49,6 +49,12 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
         case "slice":
           const newArr = new globalThis[name + "Array"]([...receiver]);
           return newArr.slice.bind(newArr);
+        case "set":
+          return (arr, offset = 0) => {
+            for (let i = 0; i + offset < receiver.length && i < arr.length; i++) {
+              receiver[i + offset] = arr[i];
+            }
+          }
         case Symbol.iterator:
           return function* () {
             for (let i = 0; i < receiver.length; i++) {

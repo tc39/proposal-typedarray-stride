@@ -33,6 +33,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
     expect(view.length).to.equal(3);
     expect(view.byteLength).to.equal(3);
     expect([...view]).to.deep.equal([2, 3, 4]);
+    expect(view.buffer).to.equal(buffer);
   });
 
   it("can create views with a stride", function() {
@@ -45,6 +46,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
     expect(view[2]).to.equal(2);
     expect(view[3]).to.equal(3);
     expect(view.stride).to.equal(2);
+    expect(view.buffer).to.equal(main.buffer);
 
     view[0] = 5;
     expect([...view]).to.deep.equal([5, 1, 2, 3]);
@@ -61,6 +63,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
     expect(view.length).to.equal(4);
     expect(view.byteLength).to.equal(4);
     expect([...view]).to.deep.equal([0, 1, 2, 3]);
+    expect(view.buffer).to.equal(buffer);
   });
 });
 
@@ -74,6 +77,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Float32Array", function() {
     expect(view[1]).to.equal(1);
     expect(view[2]).to.equal(2);
     expect(view[3]).to.equal(3);
+    expect(view.buffer).to.equal(buffer);
   });
 
   it("can handle iterators", function() {
@@ -82,6 +86,7 @@ describe("ArrayBufferView-Stride-Polyfill w/ Float32Array", function() {
     expect(view.length).to.equal(4);
     expect(view.byteLength).to.equal(16);
     expect(view.buffer.byteLength).to.equal(32);
+    expect(view.buffer).to.equal(buffer);
     expect([...view]).to.deep.equal([0, 1, 2, 3]);
   });
 
@@ -103,5 +108,29 @@ describe("ArrayBufferView-Stride-Polyfill w/ Float32Array", function() {
     expect(view.buffer).to.not.equal(buffer);
     expect(view.buffer.byteLength).to.equal(8);
     expect([...view]).to.deep.equal([1, 2]);
+  });
+
+  it("can handle set", function() {
+    const main = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3])
+    const view = new Float32Array(main.buffer, 0, 4, 2);
+    view.set([4, 5, 6, 7]);
+    expect(view.length).to.equal(4);
+    expect(view.byteLength).to.equal(16);
+    expect(view.buffer).to.equal(main.buffer);
+    expect(view.buffer.byteLength).to.equal(32);
+    expect([...view]).to.deep.equal([4, 5, 6, 7]);
+    expect([...main]).to.deep.equal([4, 0, 5, 1, 6, 2, 7, 3]);
+  });
+
+  it("can handle set w/ offset", function() {
+    const main = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3])
+    const view = new Float32Array(main.buffer, 0, 4, 2);
+    view.set([4, 5], 2);
+    expect(view.length).to.equal(4);
+    expect(view.byteLength).to.equal(16);
+    expect(view.buffer).to.equal(main.buffer);
+    expect(view.buffer.byteLength).to.equal(32);
+    expect([...view]).to.deep.equal([0, 1, 4, 5]);
+    expect([...main]).to.deep.equal([0, 0, 1, 1, 4, 2, 5, 3]);
   });
 });
