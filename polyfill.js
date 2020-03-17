@@ -1,7 +1,7 @@
 // Polyfill globalThis
-(function() {
+(function () {
   if (typeof globalThis === "object") return;
-  Object.prototype.__defineGetter__("__magic__", function() {
+  Object.prototype.__defineGetter__("__magic__", function () {
     return this;
   });
   __magic__.globalThis = __magic__; // lolwat
@@ -50,7 +50,7 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
           const newArr = new globalThis[name + "Array"]([...receiver]);
           return newArr.slice.bind(newArr);
         case Symbol.iterator:
-          return function*() {
+          return function* () {
             for (let i = 0; i < receiver.length; i++) {
               yield receiver[i];
             }
@@ -63,6 +63,16 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
           }
           return prop;
       }
+    },
+    set(_target, propKey, value, receiver) {
+      // If it’s a number, a cell is accessed and we need to implement the stride
+      // magic.
+      if (!betterIsNaN(propKey)) {
+        const index = parseInt(propKey);
+        view["set" + name](index * stride * BYTES_PER_ELEMENT, value, true);
+      }
+      // Ignore the rest for now
+      return true;
     }
   });
 }

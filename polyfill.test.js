@@ -10,6 +10,12 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
     expect([...view]).to.deep.equal([0, 1, 2, 3]);
     expect(view.length).to.equal(4);
     expect(view.byteLength).to.equal(4);
+
+    view[0] = 5;
+    expect([...view]).to.deep.equal([5, 1, 2, 3]);
+
+    view[3] = 5;
+    expect([...view]).to.deep.equal([5, 1, 2, 5]);
   });
 
   it("behaves like a normal ArrayBuffer view for creating new views on existing buffers", function() {
@@ -30,8 +36,8 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
   });
 
   it("can create views with a stride", function() {
-    const buffer = new Int8Array([0, 0, 1, 1, 2, 2, 3, 3]).buffer;
-    const view = new Int8Array(buffer, 0, 4, 2);
+    const main = new Int8Array([0, 0, 1, 1, 2, 2, 3, 3]);
+    const view = new Int8Array(main.buffer, 0, 4, 2);
     expect(view.length).to.equal(4);
     expect(view.byteLength).to.equal(4);
     expect(view[0]).to.equal(0);
@@ -39,6 +45,14 @@ describe("ArrayBufferView-Stride-Polyfill w/ Int8Array", function() {
     expect(view[2]).to.equal(2);
     expect(view[3]).to.equal(3);
     expect(view.stride).to.equal(2);
+
+    view[0] = 5;
+    expect([...view]).to.deep.equal([5, 1, 2, 3]);
+    expect([...main]).to.deep.equal([5, 0, 1, 1, 2, 2, 3, 3]);
+
+    view[3] = 5;
+    expect([...view]).to.deep.equal([5, 1, 2, 5]);
+    expect([...main]).to.deep.equal([5, 0, 1, 1, 2, 2, 5, 3]);
   });
 
   it("can handle iterators", function() {
