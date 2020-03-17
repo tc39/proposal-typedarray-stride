@@ -133,4 +133,24 @@ describe("ArrayBufferView-Stride-Polyfill w/ Float32Array", function() {
     expect([...view]).to.deep.equal([0, 1, 4, 5]);
     expect([...main]).to.deep.equal([0, 0, 1, 1, 4, 2, 5, 3]);
   });
+
+  it("can handle map", function() {
+    const buffer = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3]).buffer;
+    const view = new Float32Array(buffer, 0, 4, 2).map(v => v+1)
+    expect(view.length).to.equal(4);
+    expect(view.byteLength).to.equal(16);
+    expect(view.buffer).to.not.equal(buffer);
+    expect(view.buffer.byteLength).to.equal(16);
+    expect([...view]).to.deep.equal([1, 2, 3, 4]);
+  });
+
+  it("can handle filter", function() {
+    const buffer = new Float32Array([0, 0, 1, 1, 2, 2, 3, 3]).buffer;
+    const view = new Float32Array(buffer, 0, 4, 2).filter(v => v % 2 === 0)
+    expect(view.length).to.equal(2);
+    expect(view.byteLength).to.equal(8);
+    expect(view.buffer).to.not.equal(buffer);
+    expect(view.buffer.byteLength).to.equal(8);
+    expect([...view]).to.deep.equal([0, 2]);
+  });
 });

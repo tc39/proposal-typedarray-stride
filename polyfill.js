@@ -47,13 +47,25 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
         case "length":
           return Math.floor(view.byteLength / (stride * BYTES_PER_ELEMENT));
         case "slice":
-          const newArr = new globalThis[name + "Array"]([...receiver]);
-          return newArr.slice.bind(newArr);
+          {
+            const newArr = new globalThis[name + "Array"]([...receiver]);
+            return newArr.slice.bind(newArr);
+          }
         case "set":
           return (arr, offset = 0) => {
             for (let i = 0; i + offset < receiver.length && i < arr.length; i++) {
               receiver[i + offset] = arr[i];
             }
+          }
+        case "map":
+          {
+            const newArr = receiver.slice();
+            return newArr.map.bind(newArr);
+          }
+        case "filter":
+          {
+            const newArr = receiver.slice();
+            return newArr.filter.bind(newArr);
           }
         case Symbol.iterator:
           return function* () {
