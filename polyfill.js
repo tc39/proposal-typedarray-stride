@@ -73,6 +73,12 @@ function polyfilledArrayView(name, maybeBuffer, ...params) {
               yield receiver[i];
             }
           };
+        case Symbol.asyncIterator:
+          return async function* () {
+            for (let i = 0; i < receiver.length; i++) {
+              yield receiver[i];
+            }
+          };
         // Pass through all the other stuff
         default:
           const prop = view[propKey];

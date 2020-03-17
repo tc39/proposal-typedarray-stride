@@ -109,7 +109,7 @@ const view1 = new Float32Array(
   buffer, // buffer
   0 * Float32Array.BYTES_PER_ELEMENT, // offset
   3, // length
-  3  // stride (new!)
+  3 // stride (new!)
 );
 const view2 = new Float32Array(
   buffer,
@@ -203,13 +203,7 @@ TBD
 
 ### Polyfill
 
-There is _work-in-progress_ polyfill in `polyfill.js` using ES6 Proxies.
-
-- [x] Implements the `stride parameter
-- [x] Handles `[index]` access
-- [x] Handles iterators
-- [ ] Handles async iterators (untested)
-- [ ] Handles `map()` (untested)
+There is _work-in-progress_ polyfill in `polyfill.js` using ES6 Proxies. It is not written with performance in mind but for ease of iteration.
 
 ### Browsers
 
